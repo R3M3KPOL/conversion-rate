@@ -1,5 +1,4 @@
 import './Thead.css'
-
 const Thead = () => {
   return (
     <thead>

@@ -1,14 +1,35 @@
-import './Tbody.css'
-const Tbody = () => {
+import "./Tbody.css";
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const Tbody = ({ onData }) => {
+  console.log(onData);
   return (
     <tbody>
-      <tr>
-        <td>YEAR NUMBER</td>
-        <td>TOTAL SAVINGS END OF YEAR</td>
-        <td>INTEREST GAINED IN YEAR</td>
-        <td>TOTAL INTEREST GAINED</td>
-        <td>TOTAL INVESTED CAPITAL</td>
-      </tr>
+      {onData.map((tdElement, index) => (
+        <tr key={index}>
+          <td>{tdElement.year}</td>
+          <td>{formatter.format(tdElement.savingsEndOfYear)}</td>
+          <td>{formatter.format(tdElement.yearlyInterest)}</td>
+          <td>
+            {formatter.format(
+              tdElement.savingsEndOfYear -
+                tdElement.initialInvestment -
+                tdElement.yearlyContribution * tdElement.year
+            )}
+          </td>
+          <td>
+            {formatter.format(
+              tdElement.initialInvestment +
+                tdElement.yearlyContribution * tdElement.year
+            )}
+          </td>
+        </tr>
+      ))}
     </tbody>
   );
 };

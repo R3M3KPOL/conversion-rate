@@ -1,34 +1,9 @@
 import "./Input.css";
 import { useState } from "react";
-// import Buttons from "../Buttons/Buttons";
 import "../Buttons/Buttons.css";
+// import Buttons from "../Buttons/Buttons";
 const InputsGroup = (props) => {
-  const calculateHandler = (userInput) => {
-    // Should be triggered when form is submitted
-    // You might not directly want to bind it to the submit event on the form though...
 
-    const yearlyData = []; // per-year results
-
-    let currentSavings = +userInput["current-savings"]; // feel free to change the shape of this input object!
-    const yearlyContribution = +userInput["yearly-contribution"]; // as mentioned: feel free to change the shape...
-    const expectedReturn = +userInput["expected-return"] / 100;
-    const duration = +userInput["duration"];
-
-    // The below code calculates yearly results (total savings, interest etc)
-    for (let i = 0; i < duration; i++) {
-      const yearlyInterest = currentSavings * expectedReturn;
-      currentSavings += yearlyInterest + yearlyContribution;
-      yearlyData.push({
-        // feel free to change the shape of the data pushed to the array!
-        year: i + 1,
-        yearlyInterest: yearlyInterest,
-        savingsEndOfYear: currentSavings,
-        yearlyContribution: yearlyContribution,
-      });
-    }
-
-    // do something with yearlyData ...
-  };
 
   const [inputsValue, setInputsValue] = useState({
     "current-savings": "0",
@@ -44,12 +19,18 @@ const InputsGroup = (props) => {
       [id]: value,
     }));
 
-    props.resultValuesForInput(inputsValue);
+    // props.resultValuesForInput(inputsValue);
   };
-  // const result = (event) => {
-  //   event.preventDefault()
-  //   console.log(inputsValue)
-  // }
+  const result = (event) => {
+    event.preventDefault();
+    props.onCalculate(inputsValue);
+    setInputsValue({
+      "current-savings": "0",
+      "yearly-contribution": "0",
+      "investment-duration": "0",
+      "expected-return": "0",
+    });
+  };
   return (
     <>
       <div className="input-group">
@@ -98,14 +79,14 @@ const InputsGroup = (props) => {
           />
         </p>
       </div>
-      {/* <div className="actions">
+      <div className="actions">
         <button type="reset" className="buttonAlt">
           Reset
         </button>
         <button type="submit" className="button" onClick={result}>
           Calculate
         </button>
-      </div> */}
+      </div>
       {/* <Buttons></Buttons> */}
     </>
   );
